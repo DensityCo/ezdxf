@@ -1127,7 +1127,15 @@ class Column(Container):
             if remainer:
                 remainer.append(paragraph)
                 continue
-            paragraph.set_total_width(self.content_width)
+
+            try:
+                # This caused an issue on one of the dxf and our CAD
+                # team couldnt solve. Shouldn't hurt rendering of the
+                # raster as we dont have any text anyway.
+                paragraph.set_total_width(self.content_width)
+            except ValueError:
+                continue
+
             if self.has_flex_height:
                 height = None
             else:
