@@ -1127,7 +1127,15 @@ class Column(Container):
             if remainder:
                 remainder.append(paragraph)
                 continue
-            paragraph.set_total_width(self.content_width)
+
+            try:
+                paragraph.set_total_width(self.content_width)
+            except ValueError:
+                # Unclear what implication this actually has on
+                # the rendering, but our CAD team couldnt figure
+                # out what causes this issue exactly.
+                continue
+
             if self.has_flex_height:
                 height = None
             else:
